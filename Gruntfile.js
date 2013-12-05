@@ -1,3 +1,9 @@
+/*!
+ * Assumptions:
+ * - Using Sass
+ * - Enabled CSS source maps in Chrome
+ */
+
 'use strict';
 
 /**
@@ -57,27 +63,6 @@ module.exports = function(grunt) {
 		' * Copyright (c) <%= grunt.template.today("yyyy") %>\n' +
 		' */\n',
 
-		// Original Task configuration.
-/*		concat: {
-			options: {
-				banner: '<%= banner %>',
-				stripBanners: true
-			},
-			dist: {
-			src: ['lib/<%= pkg.name %>.js'],
-			dest: 'dist/<%= pkg.name %>.js'
-			}
-		},
-		uglify: {
-			options: {
-				banner: '<%= banner %>'
-			},
-			dist: {
-				src: '<%= concat.dist.dest %>',
-				dest: 'dist/<%= pkg.name %>.min.js'
-			}
-		}
-*/	
 
 		//
 		// Server Related Tasks
