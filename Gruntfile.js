@@ -181,7 +181,8 @@ module.exports = function(grunt) {
 				options: {
 					style: 'expanded',
 					banner: '<%= banner %>',
-					lineNumbers: true
+					lineNumbers: true,
+					sourcemap: true
 				},
 				files: {
 					'<%= project.assets %>styles/style.unprefixed.css': '<%= project.scss %>'
