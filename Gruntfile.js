@@ -1,4 +1,7 @@
 /*!
+ *
+ * Grunt Task configuration for Miracle-Gro GSG project
+ *
  * Assumptions:
  * - Using Sass
  * - Enabled CSS source maps in Chrome
@@ -42,10 +45,11 @@ module.exports = function(grunt) {
 		 * Set project info
 		 */
 		project: {
-			src: 'src',
-			assets: '<%= project.src %>/',
-			scss: '<%= project.src %>/styles/sass/style.scss',
-			js: ['<%= project.src %>/js/'],
+			src: 'src/',
+			assets: '<%= project.src %>',
+			cssDir: '<%= project.assets %>css/',
+			scss: '<%= project.cssDir %>sass/style.scss',
+			jsDir: ['<%= project.assets %>js/'],
 			build: 'build'
 		},
 
@@ -110,7 +114,7 @@ module.exports = function(grunt) {
 		 * Manage the options inside .jshintrc file
 		 */
 		jshint: {
-			files: ['<%= project.js %>script.js', 'Gruntfile.js'],
+			files: ['<%= project.jsDir %>script.js', 'Gruntfile.js'],
 			options: {
 				jshintrc: '.jshintrc'
 			}
@@ -124,7 +128,10 @@ module.exports = function(grunt) {
 		concat: {
 			dev: {
 				files: {
-					'<%= project.js %>scripts.min.js': ['<%= project.js %>script.js']
+					'<%= project.jsDir %>scripts.min.js': [
+						'<%= project.jsDir %>script.js'
+						// more files added to array as needed
+					]
 				}
 			},
 			options: {
@@ -146,7 +153,7 @@ module.exports = function(grunt) {
 			},
 			build: {
 				files: {
-				'<%= project.build %>/js/scripts.min.js': '<%= project.js %>scripts.min.js'
+				'<%= project.build %>/js/scripts.min.js': '<%= project.jsDir %>scripts.min.js'
 				}
 			}
 		},
@@ -170,7 +177,7 @@ module.exports = function(grunt) {
 					sourcemap: true
 				},
 				files: {
-					'<%= project.assets %>styles/style.unprefixed.css': '<%= project.scss %>'
+					'<%= project.cssDir %>style.unprefixed.css': '<%= project.scss %>'
 				}
 			}
 		},
@@ -186,7 +193,7 @@ module.exports = function(grunt) {
 			},
 			dev: {
 				files: {
-					'<%= project.assets %>styles/style.min.css': ['<%= project.assets %>styles/style.unprefixed.css']
+					'<%= project.cssDir %>style.min.css': ['<%= project.cssDir %>style.unprefixed.css']
 				}
 			}
 		},
@@ -202,7 +209,7 @@ module.exports = function(grunt) {
 					banner: '<%= banner %>'
 				},
 				files: {
-					'<%= project.build %>/styles/style.min.css': ['<%= project.assets %>styles/style.min.css']
+					'<%= project.build %>style.min.css': ['<%= project.cssDir %>style.min.css']
 				}
 			}
 		},
@@ -235,7 +242,7 @@ module.exports = function(grunt) {
 		 * Remove generated files for clean deploy
 		 */
 		clean: {
-			build: ['<%= project.assets %>styles/style.unprefixed.css', '<%= project.assets %>styles/style.prefixed.css']
+			build: ['<%= project.cssDir %>style.unprefixed.css', '<%= project.cssDir %>style.prefixed.css']
 		},
 
 		/**
@@ -257,7 +264,7 @@ module.exports = function(grunt) {
 				options: {
 					livereload: LIVERELOAD_PORT
 				},
-				files: ['<%= project.src %>/{,*/}*.html', '<%= project.assets %>styles/*.css', '<%= project.assets %>js/{,*/}scripts.min.js', '<%= project.assets %>{,*/}*.{png,jpg,jpeg,gif,webp,svg}']
+				files: ['<%= project.src %>/{,*/}*.html', '<%= project.cssDir %>*.css', '<%= project.assets %>js/{,*/}scripts.min.js', '<%= project.assets %>{,*/}*.{png,jpg,jpeg,gif,webp,svg}']
 			}
 		}
 
