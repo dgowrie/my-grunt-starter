@@ -1,6 +1,6 @@
 /*!
  *
- * Grunt Task configuration for Miracle-Gro GSG project
+ * Grunt Task configuration for MY BIG project
  *
  * Assumptions:
  * - Using Sass
@@ -190,6 +190,7 @@ module.exports = function(grunt) {
 		autoprefixer: {
 			options: {
 				browsers: ['last 2 version', 'safari 6', 'ie 9', 'opera 12.1', 'ios 6', 'android 4']
+				map: true
 			},
 			dev: {
 				files: {
