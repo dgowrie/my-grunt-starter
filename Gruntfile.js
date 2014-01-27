@@ -12,13 +12,11 @@
 /**
  * Livereload and connect variables
  */
-var LIVERELOAD_PORT = 35729;
-var lrSnippet = require('connect-livereload')({
-	port: LIVERELOAD_PORT
-});
-var mountFolder = function(connect, dir) {
-	return connect.static(require('path').resolve(dir));
-};
+var LIVERELOAD_PORT = 35729,
+	lrSnippet = require('connect-livereload')({port: LIVERELOAD_PORT}),
+	mountFolder = function(connect, dir) {
+		return connect.static(require('path').resolve(dir));
+	};
 
 /**
  * Grunt module
@@ -86,7 +84,10 @@ module.exports = function(grunt) {
 			livereload: {
 				options: {
 					middleware: function(connect) {
-						return [lrSnippet, mountFolder(connect, 'src')];
+						return [
+							lrSnippet,
+							mountFolder(connect, 'src')
+						];
 					}
 				}
 			}
@@ -189,7 +190,7 @@ module.exports = function(grunt) {
 		 */
 		autoprefixer: {
 			options: {
-				browsers: ['last 2 version', 'safari 6', 'ie 9', 'opera 12.1', 'ios 6', 'android 4']
+				browsers: ['last 2 version', 'safari 6', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'],
 				map: true
 			},
 			dev: {
@@ -256,19 +257,30 @@ module.exports = function(grunt) {
 			concat: {
 				files: ['<%= project.src %>/js/{,*/}*.js'],
 				tasks: ['concat:dev']
+				options: {
+					spawn: false,
+					livereload: true
+				}
 			},
 			sass: {
 				files: ['<%= project.src %>/styles/sass/{,*/}*.{scss,sass}'],
 				tasks: ['sass:dev', 'autoprefixer:dev']
+				options: {
+					spawn: false,
+					livereload: true
+				}
 			},
 			livereload: {
+				files: [
+					'<%= project.src %>{,*/}*.html',
+					'<%= project.assets %>{,*/}*.{min.css, min.js}',
+					'<%= project.assets %>{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+				],
 				options: {
 					livereload: LIVERELOAD_PORT
-				},
-				files: ['<%= project.src %>/{,*/}*.html', '<%= project.cssDir %>*.css', '<%= project.assets %>js/{,*/}scripts.min.js', '<%= project.assets %>{,*/}*.{png,jpg,jpeg,gif,webp,svg}']
+				}				
 			}
 		}
-
 	});
 	
 	
