@@ -1,7 +1,16 @@
+# OS files
 *.DS_Store
+
+# IDE files
+*.sublime-project
+*.sublime-workspace
+
+# Grunt and Sass
 .sass-cache
 node_modules
 statics
+
+# Minified / Compiled source
 src/styles/style.css
 src/js/scripts.min.js
 src/styles/style.min.css
