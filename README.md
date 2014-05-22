@@ -36,7 +36,7 @@ Sass is used to preprocess and compile CSS, all handled by Grunt on your local s
   * [Node.js](http://nodejs.org/)
 2. Grunt (Node.js dependecy)
   * [Grunt](http://gruntjs.com/)
-3. Grunt CLI (command line interface for local grunt instances)
+3. Grunt CLI (Grunt's command line interface (CLI) - installed globally)
   `$ npm install -g grunt-cli` (You may need to use sudo here)
 4. Sass
   `$ sudo gem install sass --pre` (cutting edge required to work with Source Maps)
@@ -87,9 +87,9 @@ $ git branch -d feature/my-feature
 ### File Structure for Sass (CSS)
 We are following a basic modular approach, and the directory structure and file naming conventions reflect this. Modules are @import'ed from within the main styles.scss file.
 
-Example: You are building the "timeline" component:
+Example: You are building the "nav" component:
   * The dependent CSS (in .scss Sass format) should be developed as self-contained module under the '/sass/modules/' directory
-  * The file should be saved as a partial, e.g. '_timeline.scss'
+  * The file should be saved as a partial, e.g. '_nav.scss'
   * Add an @import for that modules inside styles.scss file
 
 ### Compiled CSS, Avoiding Git Conflicts
