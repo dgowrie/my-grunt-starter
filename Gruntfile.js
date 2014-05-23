@@ -11,6 +11,9 @@
 
 /**
  * Livereload and connect variables
+ * Default port: 35729
+ * Custom ports allowed for multiple instances of Livereload on different ports
+ * 'livereload' key:value option (incl those in watch task) should all reference the 'LIVERELOAD_PORT' var as the value
  */
 var LIVERELOAD_PORT = 35729,
 	lrSnippet = require('connect-livereload')({port: LIVERELOAD_PORT}),
@@ -84,7 +87,9 @@ module.exports = function(grunt) {
 		 * Connect port/livereload
 		 * https://github.com/gruntjs/grunt-contrib-connect
 		 * Starts a local webserver and injects
-		 * livereload snippet
+		 * in conjunction with livereload snippet
+		 * Default server port: 9000
+		 * Custom port for multiple instances of connect server (configure custom livereload port as well)
 		 */
 		connect: {
 			options: {
@@ -296,7 +301,7 @@ module.exports = function(grunt) {
 				tasks: ['jshint', 'concat:dev'],
 				options: {
 					spawn: false,
-					livereload: true
+					livereload: LIVERELOAD_PORT
 				}
 			},
 			sass: {
@@ -304,7 +309,7 @@ module.exports = function(grunt) {
 				tasks: ['sass:dev', 'autoprefixer:dev'],
 				options: {
 					spawn: false,
-					livereload: true
+					livereload: LIVERELOAD_PORT
 				}
 			},
 			html: {
@@ -312,7 +317,7 @@ module.exports = function(grunt) {
 				tasks: ['copy:toBuildHtml'],
 				options: {
 					spawn: false,
-					livereload: true
+					livereload: LIVERELOAD_PORT
 				}
 			},
 			livereload: {

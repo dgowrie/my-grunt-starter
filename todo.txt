@@ -3,17 +3,16 @@ TODO for My Grunt Start
 MVP:
 * project scaffolding (src and dist)
 * README with installation instructions
+* allow for multiple grunt connect server / livereload instances at different ports...
 
 - project contributors should be able to run “npm install” and “grunt” from a fresh checkout without errors
-- allow for multiple grunt / server / livereload instances at different ports...
-
 
 
 
 Current task todos:
 * grunt default task to fire up dev instance in browser
 * grunt deploy task to minify and copy dev src to a dist folder, ready for stg/prod
-- add build and dist to ignore lists
+- add build and dist to ignore lists (not necessary if left blank)
 - research way to allow git clone without mapping back to remote (fork?)
 
 
