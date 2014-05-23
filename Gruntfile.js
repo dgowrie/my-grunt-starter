@@ -344,5 +344,5 @@ module.exports = function(grunt) {
 	 * Run `grunt deploy` on the command line
 	 * Then compress all JS/CSS files
 	 */
-	grunt.registerTask('deploy', ['sass:dev', 'autoprefixer:dev', 'cssmin:build', 'jshint', 'concat:dev', 'uglify', 'copy:toDist']);
+	grunt.registerTask('deploy', ['sass:dev', 'autoprefixer:dev', 'cssmin', 'jshint', 'concat:dev', 'uglify', 'copy:toDist']);
 };

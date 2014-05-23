@@ -3,13 +3,15 @@ TODO for My Grunt Start
 MVP:
 * project scaffolding (src and dist)
 * README with installation instructions
-- project contributors should be able to run “npm install” and “grunt” from a fresh checkout without errors
-	-- paths to assets not working, may need to reconsider directory structure
+* project contributors should be able to run “npm install” and “grunt” from a fresh checkout without errors
 
 
-User Stories:
+
+Current task todos:
 * grunt default task to fire up dev instance in browser
-- grunt build task to minify and copy dev src to a dist folder, ready for stg/prod
+* grunt deploy task to minify and copy dev src to a dist folder, ready for stg/prod
+
+
 
 
 
