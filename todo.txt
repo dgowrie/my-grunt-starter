@@ -3,7 +3,10 @@ TODO for My Grunt Start
 MVP:
 * project scaffolding (src and dist)
 * README with installation instructions
-* project contributors should be able to run “npm install” and “grunt” from a fresh checkout without errors
+
+- project contributors should be able to run “npm install” and “grunt” from a fresh checkout without errors
+- allow for multiple grunt / server / livereload instances at different ports...
+
 
 
 
