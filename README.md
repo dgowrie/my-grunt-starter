@@ -23,10 +23,17 @@ Example README follows....
 ----
 ## LOCAL SETUP
 
-Grunt
-The project is using Grunt for basic task management. Grunt has already been configured with a package.json and a Gruntfile. ([Grunt.js](http://gruntjs.com/getting-started))
+**Grunt**
+The project is using Grunt as a task runner, including:
+  * real-time compiling, concatenating, minifying, and linting
+  * watching and reloading
+  * build / deploy tasks
+  * general development environment and workflow standardization
+  * ...more
 
-Sass
+Grunt has already been configured with a package.json and a Gruntfile. ([Grunt.js](http://gruntjs.com/getting-started))
+
+**Sass**
 Sass is used to preprocess and compile CSS, all handled by Grunt on your local setup. Sass Source maps are enabled, to make debugging easier.
 
 
