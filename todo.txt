@@ -4,8 +4,7 @@ MVP:
 * project scaffolding (src and dist)
 * README with installation instructions
 * allow for multiple grunt connect server / livereload instances at different ports...
-
-- project contributors should be able to run “npm install” and “grunt” from a fresh checkout without errors
+* project contributors should be able to run “npm install” and “grunt” from a fresh checkout without errors
 
 
 
