@@ -43,12 +43,22 @@ module.exports = function(grunt) {
 		 * Set project info
 		 */
 		project: {
-			src: 'src/',
-			assets: '<%= project.src %>',
-			cssDir: '<%= project.assets %>css/',
-			scss: '<%= project.cssDir %>sass/style.scss',
-			jsDir: ['<%= project.assets %>js/'],
-			build: 'build'
+			src: 			'src/',
+			build: 			'build/', 
+			dist: 			'dist/',
+
+			srcHtmlDir: 	'<%= project.src %>html/',
+			srcSassDir: 	'<%= project.src %>sass/',
+			srcScss: 		'<%= project.srcSassDir %>style.scss',
+			srcJsDir: 		'<%= project.src %>javascript/',
+
+			buildAssets: 	'<%= project.build %>assets/', 
+			buildCssDir: 	'<%= project.buildAssets %>css/',
+			buildJsDir: 	'<%= project.buildAssets %>js/',
+
+			distAssets: 	'<%= project.dist %>assets/',
+			distCssDir: 	'<%= project.distAssets %>css/',
+			distJsDir: 		'<%= project.distAssets %>js/'
 		},
 
 		/**
@@ -86,7 +96,7 @@ module.exports = function(grunt) {
 					middleware: function(connect) {
 						return [
 							lrSnippet,
-							mountFolder(connect, 'src')
+							mountFolder(connect, 'build')
 						];
 					}
 				}
@@ -115,7 +125,7 @@ module.exports = function(grunt) {
 		 * Manage the options inside .jshintrc file
 		 */
 		jshint: {
-			files: ['<%= project.jsDir %>script.js', 'Gruntfile.js'],
+			files: ['<%= project.srcJsDir %>{,*/}*.js', 'Gruntfile.js'],
 			options: {
 				jshintrc: '.jshintrc'
 			}
@@ -124,13 +134,13 @@ module.exports = function(grunt) {
 		/**
 		 * Concatenate JavaScript files
 		 * https://github.com/gruntjs/grunt-contrib-concat
-		 * Imports all .js files and appends project banner
+		 * Imports and combines all JavaScript files into one and appends project banner
 		 */
 		concat: {
 			dev: {
 				files: {
-					'<%= project.jsDir %>scripts.min.js': [
-						'<%= project.jsDir %>script.js'
+					'<%= project.buildJsDir %>scripts.min.js': [ // appended with .min, but not minified for dev build
+						'<%= project.srcJsDir %>{,*/}*.js'
 						// more files added to array as needed
 					]
 				}
@@ -145,16 +155,16 @@ module.exports = function(grunt) {
 		/**
 		 * Uglify (minify) JavaScript files
 		 * https://github.com/gruntjs/grunt-contrib-uglify
-		 * Compresses and minifies all JavaScript files into one
+		 * Compresses / minifies JavaScript build file, copies to dist JS dir
 		 */
 		uglify: {
 			options: {
 				preserveComments: false,
 				banner: '<%= banner %>'
 			},
-			build: {
+			deploy: {
 				files: {
-				'<%= project.build %>/js/scripts.min.js': '<%= project.jsDir %>scripts.min.js'
+				'<%= project.distJsDir %>scripts.min.js': '<%= project.buildJsDir %>scripts.min.js'
 				}
 			}
 		},
@@ -178,7 +188,7 @@ module.exports = function(grunt) {
 					sourcemap: true
 				},
 				files: {
-					'<%= project.cssDir %>style.unprefixed.css': '<%= project.scss %>'
+					'<%= project.buildCssDir %>style.unprefixed.css': '<%= project.srcScss %>'
 				}
 			}
 		},
@@ -195,23 +205,23 @@ module.exports = function(grunt) {
 			},
 			dev: {
 				files: {
-					'<%= project.cssDir %>style.min.css': ['<%= project.cssDir %>style.unprefixed.css']
+					'<%= project.buildCssDir %>style.css': ['<%= project.buildCssDir %>style.unprefixed.css']
 				}
 			}
 		},
 
 		/**
 		 * CSSMin
-		 * CSS minification
+		 * Minification of CSS build file, copies to dist CSS dir
 		 * https://github.com/gruntjs/grunt-contrib-cssmin
 		 */
 		cssmin: {
-			build: {
+			deploy: {
 				options: {
 					banner: '<%= banner %>'
 				},
 				files: {
-					'<%= project.build %>style.min.css': ['<%= project.cssDir %>style.min.css']
+					'<%= project.distCssDir %>style.css': ['<%= project.buildCssDir %>style.css']
 				}
 			}
 		},
@@ -222,20 +232,47 @@ module.exports = function(grunt) {
 		//
 
 		/**
-		 * Copies files to the build dir
+		 * Copies files to the build & dist dirs
 		 * https://github.com/gruntjs/grunt-contrib-copy
 		 */
 		copy: {
-			build: {
+			// HTML from src dir to build dir
+			toBuildHtml: {
 				files: [
 					{
+						cwd: '<%= project.srcHtmlDir %>',
 						expand: true,
-						cwd: '<%= project.assets %>',
-						src: ['*', 'images/*'],
-						dest: '<%= project.build %>/'
+						src: '**/*',
+						dest: '<%= project.build %>'
+					}
+				]
+			},
+
+			// All HTML and image assets from build dir to dist dir
+			toDist: {
+				files: [
+					// image assets
+					{
+						cwd: '<%= project.buildAssets %>images',
+						expand: true,
+						src: [
+							'**/*'
+							// more files added to array as needed
+							],
+						dest: '<%= project.distAssets %>images'
+					},
+					// html
+					{
+						cwd: '<%= project.build %>',
+						expand: true,
+						src: [
+							'{,*/}*.html'
+						],
+						dest: '<%= project.dist %>'
 					}
 				]
 			}
+
 		},
 
 		/**
@@ -244,7 +281,7 @@ module.exports = function(grunt) {
 		 * Remove generated files for clean deploy
 		 */
 		clean: {
-			build: ['<%= project.cssDir %>style.unprefixed.css', '<%= project.cssDir %>style.prefixed.css']
+			//build: ['<%= project.cssDir %>style.unprefixed.css', '<%= project.cssDir %>style.prefixed.css']
 		},
 
 		/**
@@ -254,17 +291,25 @@ module.exports = function(grunt) {
 		 * Livereload the browser once complete
 		 */
 		watch: {
-			concat: {
-				files: ['<%= project.src %>/js/{,*/}*.js'],
-				tasks: ['concat:dev']
+			js: {
+				files: ['<%= project.srcJsDir %>{,*/}*.js'],
+				tasks: ['jshint', 'concat:dev'],
 				options: {
 					spawn: false,
 					livereload: true
 				}
 			},
 			sass: {
-				files: ['<%= project.src %>/styles/sass/{,*/}*.{scss,sass}'],
-				tasks: ['sass:dev', 'autoprefixer:dev']
+				files: ['<%= project.srcSassDir %>{,*/}*.{scss,sass}'],
+				tasks: ['sass:dev', 'autoprefixer:dev'],
+				options: {
+					spawn: false,
+					livereload: true
+				}
+			},
+			html: {
+				files: ['<%= project.srcHtmlDir %>{,*/}*.html'],
+				tasks: ['copy:toBuildHtml'],
 				options: {
 					spawn: false,
 					livereload: true
@@ -272,9 +317,9 @@ module.exports = function(grunt) {
 			},
 			livereload: {
 				files: [
-					'<%= project.src %>{,*/}*.html',
-					'<%= project.assets %>{,*/}*.{min.css, min.js}',
-					'<%= project.assets %>{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+					'<%= project.build %>{,*/}*.html',
+					'<%= project.buildAssets %>{,*/}*.{css, js}',
+					'<%= project.buildAssets %>{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
 				],
 				options: {
 					livereload: LIVERELOAD_PORT
@@ -292,12 +337,12 @@ module.exports = function(grunt) {
 	 * Default task
 	 * Run `grunt` on the command line
 	 */
-	grunt.registerTask('default', ['sass:dev', 'autoprefixer:dev', 'concat:dev', 'connect:livereload', 'open', 'watch']);
+	grunt.registerTask('default', ['copy:toBuildHtml', 'sass:dev', 'autoprefixer:dev', 'jshint', 'concat:dev', 'connect:livereload', 'open', 'watch']);
 
 	/**
-	 * Build task
-	 * Run `grunt build` on the command line
+	 * Deploy task
+	 * Run `grunt deploy` on the command line
 	 * Then compress all JS/CSS files
 	 */
-	grunt.registerTask('build', ['sass:dev', 'autoprefixer:dev', 'cssmin:build', 'concat:dev', 'jshint', 'uglify', 'copy:build']);
+	grunt.registerTask('deploy', ['sass:dev', 'autoprefixer:dev', 'cssmin:build', 'jshint', 'concat:dev', 'uglify', 'copy:toDist']);
 };
