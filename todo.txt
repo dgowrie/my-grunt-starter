@@ -10,6 +10,8 @@ MVP:
 Current task todos:
 * grunt default task to fire up dev instance in browser
 * grunt deploy task to minify and copy dev src to a dist folder, ready for stg/prod
+- add build and dist to ignore lists
+- research way to allow git clone without mapping back to remote (fork?)
 
 
 
