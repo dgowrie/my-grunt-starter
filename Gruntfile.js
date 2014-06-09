@@ -139,7 +139,7 @@ module.exports = function(grunt) {
 		/**
 		 * Concatenate JavaScript files
 		 * https://github.com/gruntjs/grunt-contrib-concat
-		 * Imports and combines all JavaScript files into one and appends project banner
+		 * Imports and combines all JavaScript files into one
 		 */
 		concat: {
 			dev: {
@@ -153,14 +153,13 @@ module.exports = function(grunt) {
 			options: {
 				stripBanners: true,
 				nonull: true,
-				banner: '<%= banner %>'
 			}
 		},
 
 		/**
 		 * Uglify (minify) JavaScript files
 		 * https://github.com/gruntjs/grunt-contrib-uglify
-		 * Compresses / minifies JavaScript build file, copies to dist JS dir
+		 * Compresses / minifies JavaScript build file, copies to dist JS dir and appends project banner
 		 */
 		uglify: {
 			options: {
@@ -182,13 +181,12 @@ module.exports = function(grunt) {
 		/**
 		 * Compile Sass/SCSS files
 		 * https://github.com/gruntjs/grunt-contrib-sass
-		 * Compiles all Sass/SCSS files and appends project banner
+		 * Compiles all Sass/SCSS files
 		 */
 		sass: {
 			dev: {
 				options: {
 					style: 'expanded',
-					banner: '<%= banner %>',
 					lineNumbers: true,
 					sourcemap: true
 				},
@@ -217,7 +215,7 @@ module.exports = function(grunt) {
 
 		/**
 		 * CSSMin
-		 * Minification of CSS build file, copies to dist CSS dir
+		 * Minification of CSS build file, copies to dist CSS dir and appends project banner
 		 * https://github.com/gruntjs/grunt-contrib-cssmin
 		 */
 		cssmin: {
