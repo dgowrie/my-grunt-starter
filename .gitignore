@@ -47,7 +47,5 @@ node_modules
 
 # Minified / Compiled source #
 ##############################
-src/styles/style.css
-src/js/scripts.min.js
-src/styles/style.min.css
-src/styles/style.unprefixed.css
+build
+dist
