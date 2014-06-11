@@ -59,7 +59,7 @@ Sass is used to preprocess and compile CSS, all handled by Grunt on your local s
 
 1. Node.js 
   * [Node.js](http://nodejs.org/)
-2. Grunt (Node.js dependecy)
+2. Grunt (Node.js dependency)
   * [Grunt](http://gruntjs.com/)
 3. Grunt CLI (Grunt's command line interface (CLI) - installed globally)
   `$ npm install -g grunt-cli` (You may need to use sudo here)
