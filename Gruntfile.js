@@ -10,16 +10,22 @@
 'use strict';
 
 /**
- * Livereload and connect variables
- * Default port: 35729
+ * Livereload, Grunnt Connect, and server port variables
+ *
+ * Livereload default port: 35729
  * Custom ports allowed for multiple instances of Livereload on different ports
  * 'livereload' key:value option (incl those in watch task) should all reference the 'LIVERELOAD_PORT' var as the value
+ *
+ * Connect default server port: 9000
+ * Custom port for multiple instances of connect server (be sure to configure custom livereload port as well)
+ *
  */
 var LIVERELOAD_PORT = 35729,
 	lrSnippet = require('connect-livereload')({port: LIVERELOAD_PORT}),
 	mountFolder = function(connect, dir) {
 		return connect.static(require('path').resolve(dir));
 	};
+var SERVER_PORT = 9000;
 
 /**
  * Grunt module
@@ -54,6 +60,8 @@ module.exports = function(grunt) {
 			srcSassDir: 	'<%= project.src %>sass/',
 			srcScss: 		'<%= project.srcSassDir %>style.scss',
 			srcJsDir: 		'<%= project.src %>javascript/',
+			srcVdrDir:		'<%= project.src %>vendor/',
+			srcDataDir:		'<%= project.src %>data/',
 
 			buildAssets: 	'<%= project.build %>assets/', 
 			buildCssDir: 	'<%= project.buildAssets %>css/',
@@ -87,13 +95,11 @@ module.exports = function(grunt) {
 		 * Connect port/livereload
 		 * https://github.com/gruntjs/grunt-contrib-connect
 		 * Starts a local webserver and injects
-		 * in conjunction with livereload snippet
-		 * Default server port: 9000
-		 * Custom port for multiple instances of connect server (configure custom livereload port as well)
+		 * Works in conjunction with livereload snippet
 		 */
 		connect: {
 			options: {
-				port: 9000,
+				port: SERVER_PORT,
 				hostname: '*'
 			},
 			livereload: {
@@ -181,7 +187,7 @@ module.exports = function(grunt) {
 		/**
 		 * Compile Sass/SCSS files
 		 * https://github.com/gruntjs/grunt-contrib-sass
-		 * Compiles all Sass/SCSS files
+		 * Compiles all Sass/SCSS files and appends project banner
 		 */
 		sass: {
 			dev: {
@@ -236,22 +242,38 @@ module.exports = function(grunt) {
 
 		/**
 		 * Copies files to the build & dist dirs
+		 * Handles non-CSS and non-app.JS assets - e.g. HTML, images, vendor libs, data (optonal)
 		 * https://github.com/gruntjs/grunt-contrib-copy
 		 */
 		copy: {
-			// HTML from src dir to build dir
-			toBuildHtml: {
+			// From src dir to build dir
+			toBuild: {
 				files: [
+					// html
 					{
 						cwd: '<%= project.srcHtmlDir %>',
 						expand: true,
 						src: '**/*',
 						dest: '<%= project.build %>'
+					},
+					// vendor JS (libs)
+					{
+						cwd: '<%= project.srcVdrDir %>',
+						expand: true,
+						src: '{,*/}*.js',
+						dest: '<%= project.buildJsDir %>vendor'
+					},
+					// local data
+					{
+						cwd: '<%= project.srcDataDir %>',
+						expand: true,
+						src: '**/*',
+						dest: '<%= project.build %>data'
 					}
 				]
 			},
 
-			// All HTML and image assets from build dir to dist dir
+			// From build dir to dist dir
 			toDist: {
 				files: [
 					// image assets
@@ -312,12 +334,28 @@ module.exports = function(grunt) {
 			},
 			html: {
 				files: ['<%= project.srcHtmlDir %>{,*/}*.html'],
-				tasks: ['copy:toBuildHtml'],
+				tasks: ['copy:toBuild'],
 				options: {
 					spawn: false,
 					livereload: LIVERELOAD_PORT
 				}
 			},
+			vendor: {
+				files: ['<%= project.srcVdrDir %>**/*'],
+				tasks: ['copy:toBuild'],
+				options: {
+					spawn: false,
+					livereload: LIVERELOAD_PORT
+				}
+			},
+			data: {
+				files: ['<%= project.srcDataDir %>**/*'],
+				tasks: ['copy:toBuild'],
+				options: {
+					spawn: false,
+					livereload: LIVERELOAD_PORT
+				}
+			},			
 			livereload: {
 				files: [
 					'<%= project.build %>{,*/}*.html',
@@ -340,7 +378,7 @@ module.exports = function(grunt) {
 	 * Default task
 	 * Run `grunt` on the command line
 	 */
-	grunt.registerTask('default', ['copy:toBuildHtml', 'sass:dev', 'autoprefixer:dev', 'jshint', 'concat:dev', 'connect:livereload', 'open', 'watch']);
+	grunt.registerTask('default', ['copy:toBuild', 'sass:dev', 'autoprefixer:dev', 'jshint', 'concat:dev', 'connect:livereload', 'open', 'watch']);
 
 	/**
 	 * Deploy task
