@@ -1,6 +1,9 @@
 /*!
  *
  * Grunt Task configuration for MY BIG project
+ * David Gowrie <david@webmodia.com>
+ * http://www.webmodia.com
+ * Gruntfile.js
  *
  * Assumptions:
  * - Using Sass
