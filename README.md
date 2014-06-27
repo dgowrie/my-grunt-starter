@@ -2,9 +2,11 @@ my-grunt-starter
 ================
 
 # My Grunt Starter
-A template for Grunt-based projects.
+A Grunt-based template to get up and running quickly building single page apps.
 
-At its most essential, Grunt Starter creates a directory tree, fires up a local server, and watches for changes to compile code and reload in a browser.
+At its most essential, Grunt Starter creates a default directory tree, fires up a local server with live reloading in your browser, and adds a build process and workflow management for compiling, concatenating, minifying, and linting your code while splitting asset pipeline settings for local development and deployment/production.
+
+## Overview
 
 Grunt Starter creates the following default directory structure:
 
@@ -42,11 +44,12 @@ Example README follows....
 ## LOCAL SETUP
 
 ### Grunt
-The project is using Grunt as a task runner, including:
-  * real-time compiling, concatenating, minifying, and linting
-  * watching and reloading
-  * build / deploy tasks
-  * general development environment and workflow standardization
+The project is using Grunt as a task runner, adding:
+  * Workflow management and standardization
+  * Real-time compiling, concatenating, minifying, and linting
+  * Local server setup and live reloading
+  * Build and deploy tasks
+  * Asset pipeline settings for local development and production
   * ...more
 
 Grunt has already been configured with a package.json and a Gruntfile. ([Grunt.js](http://gruntjs.com/getting-started))
