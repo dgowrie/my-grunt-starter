@@ -59,20 +59,31 @@ module.exports = function(grunt) {
 			build: 			'build/', 
 			dist: 			'dist/',
 
-			srcHtmlDir: 	'<%= project.src %>html/',
-			srcSassDir: 	'<%= project.src %>sass/',
-			srcScss: 		'<%= project.srcSassDir %>style.scss',
-			srcJsDir: 		'<%= project.src %>javascript/',
-			srcVdrDir:		'<%= project.src %>vendor/',
-			srcDataDir:		'<%= project.src %>data/',
+			srcDirData:		'<%= project.src %>data/',
+			srcDirFonts:	'<%= project.src %>fonts/',
+			srcDirHtml: 	'<%= project.src %>html/',
+			srcDirImgs:		'<%= project.src %>images/',
+			srcDirJs: 		'<%= project.src %>javascript/',
+			srcDirSass: 	'<%= project.src %>sass/',
+			srcDirVdr:		'<%= project.src %>vendor/',
+			srcScss: 		'<%= project.srcDirSass %>style.scss',
 
 			buildAssets: 	'<%= project.build %>assets/', 
-			buildCssDir: 	'<%= project.buildAssets %>css/',
-			buildJsDir: 	'<%= project.buildAssets %>js/',
+			buildDirCss: 	'<%= project.buildAssets %>css/',
+			buildDirData: 	'<%= project.buildAssets %>data/',
+			buildDirFonts: 	'<%= project.buildAssets %>fonts/',
+			buildDirImgs: 	'<%= project.buildAssets %>images/',
+			buildDirJs: 	'<%= project.buildAssets %>js/',
+			buildDirJsVdr: 	'<%= project.buildDirJs %>vendor/',
+
 
 			distAssets: 	'<%= project.dist %>assets/',
-			distCssDir: 	'<%= project.distAssets %>css/',
-			distJsDir: 		'<%= project.distAssets %>js/'
+			distDirCss: 	'<%= project.distAssets %>css/',
+			distDirData: 	'<%= project.distAssets %>data/',
+			distDirFonts: 	'<%= project.distAssets %>fonts/',
+			distDirImgs: 	'<%= project.distAssets %>images/',
+			distDirJs: 		'<%= project.distAssets %>js/',
+			distDirJsVdr:	'<%= project.distDirJs %>vendor/'
 		},
 
 		/**
@@ -139,7 +150,7 @@ module.exports = function(grunt) {
 		 * Manage the options inside .jshintrc file
 		 */
 		jshint: {
-			files: ['<%= project.srcJsDir %>{,*/}*.js', 'Gruntfile.js'],
+			files: ['<%= project.srcDirJs %>{,*/}*.js', 'Gruntfile.js'],
 			options: {
 				jshintrc: '.jshintrc'
 			}
@@ -153,8 +164,8 @@ module.exports = function(grunt) {
 		concat: {
 			dev: {
 				files: {
-					'<%= project.buildJsDir %>scripts.min.js': [ // appended with .min, but not minified for dev build
-						'<%= project.srcJsDir %>{,*/}*.js'
+					'<%= project.buildDirJs %>scripts.min.js': [ // appended with .min, but not minified for dev build
+						'<%= project.srcDirJs %>{,*/}*.js'
 						// more files added to array as needed
 					]
 				}
@@ -177,7 +188,7 @@ module.exports = function(grunt) {
 			},
 			deploy: {
 				files: {
-				'<%= project.distJsDir %>scripts.min.js': '<%= project.buildJsDir %>scripts.min.js'
+				'<%= project.distDirJs %>scripts.min.js': '<%= project.buildDirJs %>scripts.min.js'
 				}
 			}
 		},
@@ -200,7 +211,7 @@ module.exports = function(grunt) {
 					sourcemap: true
 				},
 				files: {
-					'<%= project.buildCssDir %>style.unprefixed.css': '<%= project.srcScss %>'
+					'<%= project.buildDirCss %>style.unprefixed.css': '<%= project.srcScss %>'
 				}
 			}
 		},
@@ -217,7 +228,7 @@ module.exports = function(grunt) {
 			},
 			dev: {
 				files: {
-					'<%= project.buildCssDir %>style.css': ['<%= project.buildCssDir %>style.unprefixed.css']
+					'<%= project.buildDirCss %>style.css': ['<%= project.buildDirCss %>style.unprefixed.css']
 				}
 			}
 		},
@@ -233,7 +244,7 @@ module.exports = function(grunt) {
 					banner: '<%= banner %>'
 				},
 				files: {
-					'<%= project.distCssDir %>style.css': ['<%= project.buildCssDir %>style.css']
+					'<%= project.distDirCss %>style.css': ['<%= project.buildDirCss %>style.css']
 				}
 			}
 		},
@@ -245,33 +256,47 @@ module.exports = function(grunt) {
 
 		/**
 		 * Copies files to the build & dist dirs
-		 * Handles non-CSS and non-app.JS assets - e.g. HTML, images, vendor libs, data (optonal)
+		 * Handles non-CSS and non-app.JS assets - e.g. HTML, images, vendor libs (optional), data (optonal)
 		 * https://github.com/gruntjs/grunt-contrib-copy
 		 */
 		copy: {
 			// From src dir to build dir
 			toBuild: {
 				files: [
+					// data
+					{
+						cwd: '<%= project.srcDirData %>',
+						expand: true,
+						src: '**/*',
+						dest: '<%= project.buildDirData %>'
+					},
+					// fonts
+					{
+						cwd: '<%= project.srcDirFonts %>',
+						expand: true,
+						src: '**/*',
+						dest: '<%= project.buildDirFonts %>'
+					},			
 					// html
 					{
-						cwd: '<%= project.srcHtmlDir %>',
+						cwd: '<%= project.srcDirHtml %>',
 						expand: true,
 						src: '**/*',
 						dest: '<%= project.build %>'
 					},
-					// vendor JS (libs)
+					// images
 					{
-						cwd: '<%= project.srcVdrDir %>',
-						expand: true,
-						src: '{,*/}*.js',
-						dest: '<%= project.buildJsDir %>vendor'
-					},
-					// local data
-					{
-						cwd: '<%= project.srcDataDir %>',
+						cwd: '<%= project.srcDirImgs %>',
 						expand: true,
 						src: '**/*',
-						dest: '<%= project.build %>data'
+						dest: '<%= project.buildDirImgs %>'
+					},				
+					// vendor JS (libs)
+					{
+						cwd: '<%= project.srcDirVdr %>',
+						expand: true,
+						src: '{,*/}*.js',
+						dest: '<%= project.buildDirJs %>vendor'
 					}
 				]
 			},
@@ -279,16 +304,25 @@ module.exports = function(grunt) {
 			// From build dir to dist dir
 			toDist: {
 				files: [
-					// image assets
+					// data
 					{
-						cwd: '<%= project.buildAssets %>images',
+						cwd: '<%= project.buildDirImgs %>',
 						expand: true,
 						src: [
 							'**/*'
 							// more files added to array as needed
 							],
-						dest: '<%= project.distAssets %>images'
+						dest: '<%= project.distDirImgs %>'
 					},
+					// fonts
+					{
+						cwd: '<%= project.buildDirFonts %>',
+						expand: true,
+						src: [
+							'**/*'
+						],
+						dest: '<%= project.distDirFonts %>'
+					},					
 					// html
 					{
 						cwd: '<%= project.build %>',
@@ -297,7 +331,24 @@ module.exports = function(grunt) {
 							'{,*/}*.html'
 						],
 						dest: '<%= project.dist %>'
-					}
+					},					
+					// images
+					{
+						cwd: '<%= project.buildDirImgs %>',
+						expand: true,
+						src: [
+							'**/*'
+							// more files added to array as needed
+							],
+						dest: '<%= project.distDirImgs %>'
+					},
+					// vendor JS (libs)
+					{
+						cwd: '<%= project.buildDirJsVdr %>',
+						expand: true,
+						src: '{,*/}*.js',
+						dest: '<%= project.distDirJsVdr %>'
+					}					
 				]
 			}
 
@@ -315,12 +366,36 @@ module.exports = function(grunt) {
 		/**
 		 * Runs tasks against changed watched files
 		 * https://github.com/gruntjs/grunt-contrib-watch
-		 * Watching development files and run concat/compile tasks
+		 * Watching development files and assets, run concat/compile and build tasks
 		 * Livereload the browser once complete
 		 */
 		watch: {
+			data: {
+				files: ['<%= project.srcDirData %>**/*'],
+				tasks: ['copy:toBuild'],
+				options: {
+					spawn: false,
+					livereload: LIVERELOAD_PORT
+				}
+			},
+			html: {
+				files: ['<%= project.srcDirHtml %>{,*/}*.html'],
+				tasks: ['copy:toBuild'],
+				options: {
+					spawn: false,
+					livereload: LIVERELOAD_PORT
+				}
+			},
+			fonts: {
+				files: ['<%= project.srcDirFonts %>**/*'],
+				tasks: ['copy:toBuild'],
+				options: {
+					spawn: false,
+					livereload: LIVERELOAD_PORT
+				}
+			},			
 			js: {
-				files: ['<%= project.srcJsDir %>{,*/}*.js'],
+				files: ['<%= project.srcDirJs %>{,*/}*.js'],
 				tasks: ['jshint', 'concat:dev'],
 				options: {
 					spawn: false,
@@ -328,42 +403,27 @@ module.exports = function(grunt) {
 				}
 			},
 			sass: {
-				files: ['<%= project.srcSassDir %>{,*/}*.{scss,sass}'],
+				files: ['<%= project.srcDirSass %>{,*/}*.{scss,sass}'],
 				tasks: ['sass:dev', 'autoprefixer:dev'],
 				options: {
 					spawn: false,
 					livereload: LIVERELOAD_PORT
 				}
 			},
-			html: {
-				files: ['<%= project.srcHtmlDir %>{,*/}*.html'],
-				tasks: ['copy:toBuild'],
-				options: {
-					spawn: false,
-					livereload: LIVERELOAD_PORT
-				}
-			},
 			vendor: {
-				files: ['<%= project.srcVdrDir %>**/*'],
+				files: ['<%= project.srcDirVdr %>**/*'],
 				tasks: ['copy:toBuild'],
 				options: {
 					spawn: false,
 					livereload: LIVERELOAD_PORT
 				}
 			},
-			data: {
-				files: ['<%= project.srcDataDir %>**/*'],
-				tasks: ['copy:toBuild'],
-				options: {
-					spawn: false,
-					livereload: LIVERELOAD_PORT
-				}
-			},			
 			livereload: {
 				files: [
 					'<%= project.build %>{,*/}*.html',
 					'<%= project.buildAssets %>{,*/}*.{css, js}',
-					'<%= project.buildAssets %>{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+					'<%= project.buildAssets %>{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+					'<%= project.buildDirData %>**/*'
 				],
 				options: {
 					livereload: LIVERELOAD_PORT
