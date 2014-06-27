@@ -296,7 +296,7 @@ module.exports = function(grunt) {
 						cwd: '<%= project.srcDirVdr %>',
 						expand: true,
 						src: '{,*/}*.js',
-						dest: '<%= project.buildDirJs %>vendor'
+						dest: '<%= project.buildDirJsVdr %>'
 					}
 				]
 			},
@@ -306,21 +306,16 @@ module.exports = function(grunt) {
 				files: [
 					// data
 					{
-						cwd: '<%= project.buildDirImgs %>',
+						cwd: '<%= project.buildDirData %>',
 						expand: true,
-						src: [
-							'**/*'
-							// more files added to array as needed
-							],
-						dest: '<%= project.distDirImgs %>'
+						src: '**/*',
+						dest: '<%= project.distDirData %>'
 					},
 					// fonts
 					{
 						cwd: '<%= project.buildDirFonts %>',
 						expand: true,
-						src: [
-							'**/*'
-						],
+						src: '**/*',
 						dest: '<%= project.distDirFonts %>'
 					},					
 					// html
@@ -336,10 +331,7 @@ module.exports = function(grunt) {
 					{
 						cwd: '<%= project.buildDirImgs %>',
 						expand: true,
-						src: [
-							'**/*'
-							// more files added to array as needed
-							],
+						src: '**/*',
 						dest: '<%= project.distDirImgs %>'
 					},
 					// vendor JS (libs)
