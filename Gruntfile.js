@@ -70,7 +70,7 @@ module.exports = function(grunt) {
 
 			buildAssets: 	'<%= project.build %>assets/', 
 			buildDirCss: 	'<%= project.buildAssets %>css/',
-			buildDirData: 	'<%= project.buildAssets %>data/',
+			buildDirData: 	'<%= project.build %>data/',
 			buildDirFonts: 	'<%= project.buildAssets %>fonts/',
 			buildDirImgs: 	'<%= project.buildAssets %>images/',
 			buildDirJs: 	'<%= project.buildAssets %>js/',
@@ -79,7 +79,7 @@ module.exports = function(grunt) {
 
 			distAssets: 	'<%= project.dist %>assets/',
 			distDirCss: 	'<%= project.distAssets %>css/',
-			distDirData: 	'<%= project.distAssets %>data/',
+			distDirData: 	'<%= project.dist %>data/',
 			distDirFonts: 	'<%= project.distAssets %>fonts/',
 			distDirImgs: 	'<%= project.distAssets %>images/',
 			distDirJs: 		'<%= project.distAssets %>js/',
