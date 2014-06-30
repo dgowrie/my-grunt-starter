@@ -356,6 +356,7 @@ module.exports = function(grunt) {
 		},
 
 		/**
+		 * Watch task
 		 * Runs tasks against changed watched files
 		 * https://github.com/gruntjs/grunt-contrib-watch
 		 * Watching development files and assets, run concat/compile and build tasks
@@ -370,6 +371,14 @@ module.exports = function(grunt) {
 					livereload: LIVERELOAD_PORT
 				}
 			},
+			fonts: {
+				files: ['<%= project.srcDirFonts %>**/*'],
+				tasks: ['copy:toBuild'],
+				options: {
+					spawn: false,
+					livereload: LIVERELOAD_PORT
+				}
+			},
 			html: {
 				files: ['<%= project.srcDirHtml %>{,*/}*.html'],
 				tasks: ['copy:toBuild'],
@@ -378,8 +387,8 @@ module.exports = function(grunt) {
 					livereload: LIVERELOAD_PORT
 				}
 			},
-			fonts: {
-				files: ['<%= project.srcDirFonts %>**/*'],
+			images: {
+				files: ['<%= project.srcDirImgs %>**/*'],
 				tasks: ['copy:toBuild'],
 				options: {
 					spawn: false,
