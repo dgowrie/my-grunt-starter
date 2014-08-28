@@ -1,9 +1,9 @@
+// Gruntfile.js
+
 /*!
  *
  * Grunt Task configuration for MY BIG project
- * David Gowrie <david@webmodia.com>
- * http://www.webmodia.com
- * Gruntfile.js
+ * Author: David Gowrie <david@webmodia.com>, http://www.webmodia.com
  *
  * Assumptions:
  * - Using Sass
@@ -75,7 +75,6 @@ module.exports = function(grunt) {
 			buildDirImgs: 	'<%= project.buildAssets %>images/',
 			buildDirJs: 	'<%= project.buildAssets %>js/',
 			buildDirJsVdr: 	'<%= project.buildDirJs %>vendor/',
-
 
 			distAssets: 	'<%= project.dist %>assets/',
 			distDirCss: 	'<%= project.distAssets %>css/',
@@ -352,7 +351,9 @@ module.exports = function(grunt) {
 		 * Remove generated files for clean deploy
 		 */
 		clean: {
-			//build: ['<%= project.cssDir %>style.unprefixed.css', '<%= project.cssDir %>style.prefixed.css']
+			deploy: {
+				src: ['<%= project.dist %>']
+			}
 		},
 
 		/**
@@ -449,5 +450,5 @@ module.exports = function(grunt) {
 	 * Run `grunt deploy` on the command line
 	 * Then compress all JS/CSS files
 	 */
-	grunt.registerTask('deploy', ['sass:dev', 'autoprefixer:dev', 'cssmin', 'jshint', 'concat:dev', 'uglify', 'copy:toDist']);
+	grunt.registerTask('deploy', ['clean:deploy', 'sass:dev', 'autoprefixer:dev', 'cssmin', 'jshint', 'concat:dev', 'uglify', 'copy:toDist']);
 };
